@@ -1,3 +1,4 @@
+require 'pry'
 class ArtistsController < ApplicationController
   def index
     @artists = Artist.all
@@ -8,7 +9,12 @@ class ArtistsController < ApplicationController
   end
 
   def new
-    @artist = Artist.new
+    @pref = Preference.last
+    if !@pref.allow_create_artists
+      redirect_to artists_path 
+    else  
+      @artist = Artist.new
+    end 
   end
 
   def create
